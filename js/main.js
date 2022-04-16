@@ -9,10 +9,13 @@ const createElement = function (elName, className, textContent) {
 const addZero = function (number) {
     return number < 10 ? "0" + number : number;
 }
+
 const showDate = function (dateString) {
-    const data = new Date(dateString);
-    return `${addZero(date.getDate())}.${addZero(date.getMonth() + 1)}.${addZero(date.getFullYear())}`
-};
+    const date = new Date(dateString);
+
+    return `${addZero(date.getDate())}.${addZero(date.getMonth() + 1)}.${addZero(date.getFullYear())}`;
+}
+
 const parrotsTable = document.querySelector(".parrots");
 const addParrotsModal = new bootstrap.Modal(document.querySelector("#add-parrot-modal"));
 const renderParrot = function (parrot) {
@@ -38,18 +41,19 @@ const renderParrot = function (parrot) {
     const parrotsSubtitle = parrotsItem.querySelector(".parrots__subtitle");
     parrotsItem.querySelector(".parrots__subtitle").textContent = `${sizes.height + "sm"} x ${sizes.width + "sm"}`;
     const parrotsDate = parrotsItem.querySelector(".parrots__date");
-    parrotsItem.querySelector(".parrots__date").textContent = birthDate;
+    parrotsItem.querySelector(".parrots__date").textContent = showDate(birthDate);
     const parrotsDeleteBtn = parrotsItem.querySelector(".parrots__del-btn");
     parrotsDeleteBtn.setAttribute("data-id", id);
     const parrotsStarsBtn = parrotsItem.querySelector(".parrots__star-btn");
+    parrotsStarsBtn.setAttribute("data-star", id);
     const parrotsEditBtn = parrotsItem.querySelector(".parrots__edit-btn");
     parrotsEditBtn.setAttribute("data-edit", id);
     const parrotsFeatures = parrotsItem.querySelector(".benefits");
     parrotsItem.querySelector(".benefits").textContent = features;
-    
 
+    
     return parrotsItem;
-}
+};
 
 const elCount = document.querySelector(".count");
 let showingParrots = products.slice();
@@ -134,6 +138,7 @@ const editfeatures = document.querySelector("#edit-features");
 
 parrotsTable.addEventListener("click", function (evt) {
 
+
     if (evt.target.matches(".parrots__del-btn")) {
         const deleteId = +evt.target.dataset.id;
 
@@ -145,7 +150,14 @@ parrotsTable.addEventListener("click", function (evt) {
         });
         products.splice(deleteItem, 1);
         showingParrots.splice(deleteShowItem, 1);
-    } else if (evt.target.matches(".parrots__edit-btn")) {
+    } else if (evt.target.matches("parrots__star-btn")) {
+        const startId = +evt.target.dataset.star;
+        const starItem = products.find(function(parrots) {
+        return parrots.id === startId;
+    });
+       
+    }
+    else if (evt.target.matches(".parrots__edit-btn")) {
         const editId = +evt.target.dataset.edit;
         const editItem = products.find(function (parrot) {
             return parrot.id === editId;
@@ -175,7 +187,7 @@ editInput.addEventListener("input", function () {
     }
 });
 
-const editParrotsModal = document.querySelector("#edit-parrot-modal");
+const editParrotsModal = new bootstrap.Modal(document.querySelector("#edit-parrot-modal"));
 const editForm = document.querySelector("#edit-form");
 editForm.addEventListener("submit", function (evt) {
     evt.preventDefault();
