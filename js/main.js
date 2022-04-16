@@ -16,6 +16,7 @@ const showDate = function (dateString) {
     return `${addZero(date.getDate())}.${addZero(date.getMonth() + 1)}.${addZero(date.getFullYear())}`;
 }
 
+
 const parrotsTable = document.querySelector(".parrots");
 const addParrotsModal = new bootstrap.Modal(document.querySelector("#add-parrot-modal"));
 const renderParrot = function (parrot) {
@@ -49,8 +50,7 @@ const renderParrot = function (parrot) {
     const parrotsEditBtn = parrotsItem.querySelector(".parrots__edit-btn");
     parrotsEditBtn.setAttribute("data-edit", id);
     const parrotsFeatures = parrotsItem.querySelector(".benefits");
-    parrotsItem.querySelector(".benefits").textContent = features;
-
+    parrotsItem.querySelector(".parrots__list-item").textContent = features;
     
     return parrotsItem;
 };
@@ -175,18 +175,6 @@ parrotsTable.addEventListener("click", function (evt) {
     renderParrots();
 });
 
-const editInput = document.querySelector("#edit-features");
-let editAddOption = [];
-editInput.addEventListener("input", function () {
-
-    const editedSplitValue = editInput.value.trim().split(",");
-
-    if (editedSplitValue.length === 2) {
-        editAddOption.push(editedSplitValue[0]);
-        editInput.value = "";
-    }
-});
-
 const editParrotsModal = new bootstrap.Modal(document.querySelector("#edit-parrot-modal"));
 const editForm = document.querySelector("#edit-form");
 editForm.addEventListener("submit", function (evt) {
@@ -213,7 +201,7 @@ editForm.addEventListener("submit", function (evt) {
         height: editHeightValue,
       },
       isFavorite: false,
-      features: editAddOption
+      features: featuresValue
     }
   
     const editingItemsIndex = products.findIndex(function (parrot) {
